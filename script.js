@@ -1,7 +1,7 @@
 let xp = 0;
-let health = 100;
+let health = 500;
 let gold = 50;
-let currentWeapon = 0;
+let currentWeapon = 2;
 let fighting;
 let monsterHealth;
 let inventory = ["stick"];
@@ -72,14 +72,50 @@ const locations = [
   },
   {
     name: "kill monster",
-    "button text":  ["Go to town square", "Go to town square", "Go to town square"],
-    "button functions": [goTown, goTown, goTown],
-    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.'
-  }
+    "button text": [
+      "Go to town square",
+      "Go to town square",
+      "Go to town square",
+    ],
+    "button functions": [goTown, goTown, easterEgg],
+    text: 'The monster screams "Arg!" as it dies. You gain experience points and find gold.',
+  },
+  {
+    name: "lose",
+    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+    "button functions": [restart, restart, restart],
+    text: "You die &#x2620",
+  },
+  {
+    name: "easterEgg",
+    "button text": ["Pick 2", "Pick 8", "Go to town square"],
+    "button functions": [pickTwo, pikcEight, goTown],
+    text: "You find a secret game. Pick a number above. Ten numbers will be randomly chosen between 0 and 10. If the number you choose matches one of the random numbers, you win!",
+  },
+  {
+    name: "win",
+    "button text": ["REPLAY?", "REPLAY?", "REPLAY?"],
+    "button functions": [restart, restart, restart],
+    text: "You defeat the dragon! YOU WIN THE GAME! &#x1F389",
+  },
 ];
 goToStorebtn.onclick = goStore;
 goToCavebtn.onclick = goCave;
 fightDragonbtn.onclick = fightDragon;
+
+// locations
+function goTown() {
+  update(locations[0]);
+  text.style.display = "black";
+}
+
+function goStore() {
+  update(locations[1]);
+}
+
+function goCave() {
+  update(locations[2]);
+}
 
 function update(location) {
   monstersStats.style.display = "none";
@@ -92,22 +128,26 @@ function update(location) {
   text.innerHTML = location.text;
 }
 
-function goTown() {
-  update(locations[0]);
-}
-
-function goStore() {
-  update(locations[1]);
-}
-
-function goCave() {
-  update(locations[2]);
-}
-
-function fightDragon() {
+function goFight() {
   update(locations[3]);
+  monsterHealth = monsters[fighting].health;
+  monstersStats.style.display = "block";
+  monsterNameText.innerText = monsters[fighting].name;
+  monsterHealthText.innerText = monsterHealth;
 }
 
+function restart() {
+  xp = 0;
+  health = 100;
+  gold = 50;
+  currentWeapon = 0;
+  xpText.innerText = xp;
+  healthText.innerText = health;
+  goldText.innerText = gold;
+  goTown();
+}
+
+// Thing to buy
 function buyHealth() {
   if (gold < 10) {
     text.innerText = "You don't have enough gold to buy health.";
@@ -138,49 +178,25 @@ function buyWeapon() {
   }
 }
 
-function goFight() {
-  update(locations[3]);
-  monsterHealth = monsters[fighting].health;
-  monstersStats.style.display = "block";
-  monsterNameText.innerText = monsters[fighting].name;
-  monsterHealthText.innerText = monsterHealth;
-}
-
+// Monsters
 function fightSlime() {
   fighting = 0;
   goFight();
 }
 
-function attack() {
-  text.innerText = "The " + monsters[fighting].name + " attacks.";
-  text.innerText += "You attack it with your " + weapons[currentWeapon].name;
-  health -= getMonsterAttackValue(monsters[fighting].level);
-  if(isMonsterHit()) {
-    
-    monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;
-    //Math.floor(Math.random() * xp): This generates a random number between 0 (inclusive) and xp (exclusive), and then floors it to an integer value. 
-    // Math.random() generates a random floating-point number between 0 and 1, which is then multiplied by xp.
-    // + 1: This is added to the random value generated to ensure it's never 0.
-  } else {
-    text.innerText += " You miss."
-  }
-  healthText.innerText = health;
-  monsterHealthText.innerText = monsterHealth;
-  if(health <= 0) {
-    lose();
-  } else if(monsterHealth <= 0){
-    if(fighting === 2) {
-      winGame();
-    } else {
-      defeatMonster();
-    }
-  }
-
-
+function fightFangedBeast() {
+  fighting = 1;
+  goFight();
 }
 
+function fightDragon() {
+  fighting = 2;
+  goFight();
+}
+
+// Monsters properties
 function getMonsterAttackValue(level) {
-  const hit = (level * 5) - Math.floor(Math.random() * xp);
+  const hit = level * 5 - Math.floor(Math.random() * xp);
   return hit > 0 ? hit : 0;
 }
 
@@ -188,14 +204,8 @@ function getMonsterAttackValue(level) {
 The random number generated is greater than 0.2 (with a probability of 80%).
 The health is less than 20.*/
 function isMonsterHit() {
-  return Math.random() > .2 || health < 20;
+  return Math.random() > 0.2 || health < 20;
 }
-
-function dodge() {
-  text.innerHTML = "You dodge the attack from the " + monsters[fighting].name;
-}
-
-function fightFangedBeast() {}
 
 function defeatMonster() {
   gold += Math.floor(monsters[fighting].level * 6.7);
@@ -204,9 +214,81 @@ function defeatMonster() {
   xpText.innerText = xp;
   update(locations[4]);
 }
+
+// WIN or LOSE
 function winGame() {
-  update(locations[4]);
+  update(locations[7]);
 }
 function lose() {
-  update()
+  update(locations[5]);
+}
+
+// Abilities
+function attack() {
+  text.innerText = "The " + monsters[fighting].name + " attacks.";
+  text.innerText += "You attack it with your " + weapons[currentWeapon].name;
+  health -= getMonsterAttackValue(monsters[fighting].level);
+  if (isMonsterHit()) {
+    monsterHealth -=
+      weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1;
+    //Math.floor(Math.random() * xp): This generates a random number between 0 (inclusive) and xp (exclusive), and then floors it to an integer value.
+    // Math.random() generates a random floating-point number between 0 and 1, which is then multiplied by xp.
+    // + 1: This is added to the random value generated to ensure it's never 0.
+  } else {
+    text.innerText += " You miss.";
+  }
+  healthText.innerText = health;
+  monsterHealthText.innerText = monsterHealth;
+  if (health <= 0) {
+    health = 0;
+    healthText.innerText = health;
+    lose();
+  } else if (monsterHealth <= 0) {
+    if (fighting === 2) {
+      winGame();
+    } else {
+      defeatMonster();
+    }
+  }
+}
+
+function dodge() {
+  text.innerHTML = "You dodge the attack from the " + monsters[fighting].name;
+}
+
+// Game secret
+function pickTwo() {
+  pick(2);
+}
+
+function pikcEight() {
+  pick(8);
+}
+
+function pick(guess) {
+  const numbers = [];
+  while (numbers.length < 10) {
+    numbers.push(Math.floor(Math.random() * 11));
+  }
+  text.innerText = "You picked " + guess + ". Here are the random numbers:\n";
+  for (let i = 0; i < 10; i++) {
+    text.innerText += numbers[i] + "\n"; // dispaly the array numbers
+  }
+  if (numbers.includes[guess]) {
+    console.log("here");
+    text.innerText = "Right! You win 20 gold!";
+    gold += 20;
+    goldText.innerText = gold;
+  } else {
+    text.innerText = "Wrong! You lose 10 health!";
+    health -= 10;
+    health.innerText = health;
+    if (health <= 0) {
+      lose();
+    }
+  }
+}
+
+function easterEgg() {
+  update(locations[6]);
 }
