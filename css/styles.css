@@ -1,0 +1,63 @@
+
+body {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    /* hack for box model */
+    background-color: #447EF2;
+}
+#game {
+    max-width: 35rem;
+    max-height: 40rem;
+    margin: 0 auto;
+    background-color: #9BC1F2;
+    padding: 1rem;
+    margin-top: 3rem; 
+    border-radius: 0.2rem;
+}
+
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+}
+
+#stats, 
+#controls {
+    border: 0.1rem solid #85F2BF;
+    padding: 0.5rem;
+    background-color: #9BC1F2;
+}
+
+#stats,
+#controls,
+#text,
+#monstersStats{
+    font-size: 1rem;
+}
+
+button {
+    border-radius: 0.3rem;
+    padding: 0.4rem;
+    cursor: pointer;
+    background-color: #F26A4B;
+    color: white;
+}
+
+#controls,
+#stats {
+    display: flex;
+    justify-content: space-around;
+}
+
+#text {
+    background-color: #C98A18;
+    padding: 0.4rem;
+}
+
+#monstersStats {
+    display: none;
+    background-color: #c70d0d;
+    padding: 0.3rem;
+    color: white;
+}
+
