@@ -1,87 +1,77 @@
-
 body {
-    font-size: 62.5%;
-    box-sizing: border-box;
-    /* hack for box model */
-    background-color: #447EF2;
+  font-size: 1.6rem; /* 16px equivalent */
+  box-sizing: border-box;
+  background-color: #447ef2;
 }
+
 #game {
-    max-width: 35rem;
-    max-height: 50rem;
-    margin: 0 auto;
-    background-color: #9BC1F2;
-    padding: 1rem;
-    margin-top: 3rem; 
-    border-radius: 0.2rem;
-}
-
-*,
-*:before,
-*:after {
-  box-sizing: inherit;
-}
-
-#stats, 
-#controls {
-    border: 0.1rem solid #85F2BF;
-    padding: 0.5rem;
-    background-color: #9BC1F2;
+  max-width: 35rem;
+  margin: 3rem auto 0; /* for better centering */
+  padding: 1rem;
+  background-color: #9bc1f2;
+  border-radius: 0.2rem;
 }
 
 #stats,
-#controls,
-#text,
-#monstersStats{
-    font-size: 1rem;
+#controls {
+  border: 0.1rem solid #85f2bf;
+  padding: 0.5rem;
+  background-color: #9bc1f2;
 }
 
 button {
-    border-radius: 0.3rem;
-    padding: 0.4rem;
-    cursor: pointer;
-    background-color: #F26A4B;
-    color: white;
+  border-radius: 0.3rem;
+  padding: 0.8rem 1.2rem; /* Increased padding for better touch targets */
+  cursor: pointer;
+  background-color: #f26a4b;
+  color: white;
 }
 
 #controls,
 #stats {
-    display: flex;
-    justify-content: space-around;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap; /* Allow items to wrap on smaller screens */
 }
 
 #text {
-    background-color: #C98A18;
-    padding: 0.4rem;
+  background-color: #c98a18;
+  padding: 0.8rem;
 }
 
 #monstersStats {
-    display: none;
-    background-color: #c70d0d;
-    padding: 0.3rem;
-    color: white;
+  display: none;
+  background-color: #c70d0d;
+  padding: 0.6rem;
+  color: white;
 }
 
 p {
-    font-size: 1rem;
-    background-color: #025951;
-    padding: 0.4rem;
-    max-width: 10rem;
-    color: white;
-
-}
-img {
-    width: 10rem;
-    height: 10rem;
-    
+  font-size: 1.2rem; /* 16px equivalent */
+  background-color: #025951;
+  padding: 0.8rem;
+  max-width: 10rem;
+  color: white;
+  text-align: center;
 }
 
-p,
 img {
-    margin-right: 1rem;
-    text-align: center;
+  max-width: 10rem;
+  height: auto;
 }
 
 section {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(10rem, 1fr)
+  ); /* Adjust grid columns dynamically */
+  grid-gap: 0.2rem; /* Add gap between grid items */
+}
+
+/* Media Queries */
+@media screen and (max-width: 768px) {
+  #game {
+    max-width: 90%;
+  }
 }
