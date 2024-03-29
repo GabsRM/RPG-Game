@@ -1,7 +1,7 @@
 let xp = 0;
-let health = 500;
+let health = 100;
 let gold = 50;
-let currentWeapon = 2;
+let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 let inventory = ["stick"];
@@ -15,7 +15,16 @@ const xpText = document.querySelector("#xpText");
 const text = document.querySelector("#text");
 const monsterNameText = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const daggerWeapon = document.querySelector("#daggerWeapon");
+const hammerWeapon = document.querySelector("#hammerWeapon");
+const swordWeapon = document.querySelector("#swordWeapon");
 
+function restartInventory() {
+  daggerWeapon.style.display = "none";
+  hammerWeapon.style.display = "none";
+  swordWeapon.style.display = "none ";
+}
+restartInventory();
 const weapons = [
   { name: "stick", power: 5 },
   { name: "dagger", power: 30 },
@@ -144,6 +153,7 @@ function restart() {
   xpText.innerText = xp;
   healthText.innerText = health;
   goldText.innerText = gold;
+  restartInventory();
   goTown();
 }
 
@@ -170,6 +180,7 @@ function buyWeapon() {
       let newWeapon = weapons[currentWeapon].name;
       text.innerText = "You now have a " + newWeapon + ".";
       inventory.push(newWeapon);
+      updateInventory();
     } else {
       text.innerText = "You don't have enough money to buy a new weapon";
     }
@@ -260,7 +271,7 @@ function dodge() {
 function pickTwo() {
   pick(2);
 }
-
+U;
 function pikcEight() {
   pick(8);
 }
@@ -291,4 +302,18 @@ function pick(guess) {
 
 function easterEgg() {
   update(locations[6]);
+}
+
+function updateInventory() {
+  switch (currentWeapon) {
+    case 1:
+      daggerWeapon.style.display = "block";
+      break;
+    case 2:
+      hammerWeapon.style.display = "block";
+      break;
+    case 3:
+      swordWeapon.style.display = "block";
+      break;
+  }
 }
