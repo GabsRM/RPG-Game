@@ -7,7 +7,7 @@ body {
 }
 #game {
     max-width: 35rem;
-    max-height: 40rem;
+    max-height: 50rem;
     margin: 0 auto;
     background-color: #9BC1F2;
     padding: 1rem;
@@ -61,3 +61,27 @@ button {
     color: white;
 }
 
+p {
+    font-size: 1rem;
+    background-color: #025951;
+    padding: 0.4rem;
+    max-width: 10rem;
+    color: white;
+
+}
+img {
+    width: 10rem;
+    height: 10rem;
+    
+}
+
+p,
+img {
+    margin-right: 1rem;
+    text-align: center;
+}
+
+section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
